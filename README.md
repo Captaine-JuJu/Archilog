@@ -14,7 +14,7 @@ Projet développer dans le cadre du cours d'architecture logiciel de deuxieme an
 
 ## ✨ Fonctionnalités
 * Création d'une cagnotte si elle le nom entrer n'existe pas dans la base de donnée
-* Ajouter à sa participation ou crée une nouvelle participation si l'utilisateur n'a pas encore participé dans la cagnotte
+* Ajouter à une participation ou crée une nouvelle participation si l'utilisateur n'a pas encore participé dans la cagnotte
 * Supprimer une participation, si il n'y a plus de participant dans la cagnotte, elle se supprime
 * Calculer les dettes pour équilibrer la cagnotte
 
