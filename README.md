@@ -44,4 +44,4 @@ Pour utiliser flask et acceder à l'interface graphique sur votre navigateur :
 uv run flask --app archilog.views --debug run  
 ```
 
-Course & examples : [https://kathode.neocities.org](https://kathode.neocities.org)
+Cours & exampls : [https://kathode.neocities.org](https://kathode.neocities.org)
