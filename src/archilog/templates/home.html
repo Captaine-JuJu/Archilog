@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Bienvenue sur l'application de gestion de cagnotte</h1>
+    <h2>Création de cagnotte</h2>
+    <form action="/cagnotte/creationCagnotte" method="post">
+        <div>
+            <label>Votre nom : </label>
+            <input type="text" id="nom" name="nom">
+        </div>
+        <div>
+            <label>Votre montant : </label>
+            <input type="number" id="montant" name="montant">
+        </div>
+        <div>
+            <label>Le nom de votre cagnotte : </label>
+            <input type="text" id="nomCagnotte" name="nomCagnotte">
+        </div>
+        <div class="button">
+            <button type="submit">Valider</button>
+        </div>
+    </form>
+
+    {% if code == "1" %}
+    <p>Veuillez entrer un login valide (2 caractères minimum) !</p>
+    {% elif code == "2" %}
+    <p>Veuillez entrer un nom de cagnotte valide (5 caractères minimum) !</p>
+    {% elif code == "3" %}
+    <p>Le montant doit être possitif et non nul !</p>
+    {% elif code == "4" %}
+    <p>Cette cagnotte existe deja !</p>
+    {% endif %}
+
+    <h2>Choix cagnotte</h2>
+    <form action="/cagnotte/choix" method="post">
+        <select name="cagnotte" id="cagnotte" onchange="this.form.submit()">
+            <option value="" selected>Veuillez choisir une cagnotte</option>
+            {% for i in result %}
+                <option value="{{ i.nomCagnotte }}"> {{ i.nomCagnotte }}</option>
+            {% endfor %}
+
+        </select>
+    </form>
+</body>
+</html>

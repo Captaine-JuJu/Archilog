@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails de la cagnotte</title>
+</head>
+<body>
+    <h1>Bienvenue sur la cagnotte : {{ nomAffichage }}</h1>
+
+    <hr>
+    <h3>Montant total de la cagnotte</h3>
+    <p>Montant total dans la cagnotte : <strong>{{ total }}</strong> € </p>
+    <h3>Liste des participants :</h3>
+    <ul>
+        {% for ligne in participations %}
+            <li>
+                <strong>{{ ligne.login }}</strong> a contribué à hauteur de
+                <strong>{{ ligne.montant }} €</strong>
+            </li>
+            <form action="/cagnotte/supprimerCagnotte" method="post">
+                <input type="hidden" value="{{ ligne.login }}" name="nom">
+                <input type="hidden" value="{{ nomAffichage }}" name="nomCagnotte">
+
+                <button type="submit" onclick="return confirm('Êtes vous sur de vouloir supprimer cette participation ? ')">Supprimer</button>
+            </form>
+        {% endfor %}
+    </ul>
+
+    <h3>Qui doit à qui :</h3>
+    {%if remboursement %}
+        <ul>
+            {% for ligne in remboursement %}
+                <li>{{ ligne }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Tout le monde est remboursé</p>
+    {% endif %}
+
+    <h3>Ajout à la cagnotte</h3>
+    <form action="/cagnotte/ajoutCagnotte" method="post">
+        <div>
+            <label>Votre nom : </label>
+            <input type="text" id="nom" name="nom">
+        </div>
+        <div>
+            <label>Votre montant : </label>
+            <input type="number" id="montant" name="montant">
+        </div>
+        <div>
+            <input type="hidden" name="nomCagnotte" value="{{ nomAffichage }}">
+        </div>
+        <div class="button">
+            <button type="submit">Valider</button>
+        </div>
+    </form>
+
+    {% if error == "1" %}
+    <p>Le montant doit être positif et non nul !</p>
+    {% elif error == "2" %}
+    <p>Veuillez entrer un nom valide (2 caractères minimum) !</p>
+    {% endif %}
+
+    <br>
+    <a href="/">Retour à l'accueil</a>
+</body>
+</html>
