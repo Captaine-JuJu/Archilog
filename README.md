@@ -10,7 +10,7 @@
 ---
 
 ## 🚀 Présentation
-Projet développer dans le cadre du cours d'architecture logiciel de deuxieme année de BUT informatique
+Projet développer dans le cadre du cours d'architecture logiciel de deuxieme année de BUT informatique. L'idée est de développer une application permettant la gestion de cagnotte commune, évalué sur les fonctionnalité, l'esprit du code et l'architecture du logiciel.
 
 ## ✨ Fonctionnalités
 * Création d'une cagnotte si elle le nom entrer n'existe pas dans la base de donnée
