@@ -32,13 +32,7 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  create
-  delete
-  get
-  get-all
-  import-csv
-  init-db
-  update
+
 
 Pour utiliser flask et acceder à l'interface graphique sur votre navigateur :
 uv run flask --app archilog.views --debug run  
