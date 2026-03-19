@@ -1,6 +1,6 @@
 from sqlalchemy import func, update, and_
 
-from src.archilog.creation_table import  engine, users_table
+from archilog.creation_table import  engine, users_table
 
 def enregistrerParticipation(nom, montantAjoute, nomCagnotte):
     """

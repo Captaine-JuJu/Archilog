@@ -1,8 +1,9 @@
+import click
 from flask import Flask, render_template, request, redirect, url_for
 
-from src.archilog.data import enregistrerParticipation, totalCagnotte, supprimerParticipation
-from src.archilog.domain import calculeQuiDoitAQui
-from src.archilog.creation_table import users_table, engine
+from archilog.data import enregistrerParticipation, totalCagnotte, supprimerParticipation
+from archilog.domain import calculeQuiDoitAQui
+from archilog.creation_table import users_table, engine
 
 app = Flask(__name__)
 
@@ -88,3 +89,31 @@ def retirerParticipation():
             conn.commit()
         return redirect(url_for('hello_world'))
     return redirect(url_for('voirCagnotte', nom=nomCagnotte))
+
+@click.group()
+def cli():
+    pass
+
+@cli.command()
+@click.option("--nom-participant", prompt="Nom du participant ")
+@click.option("--nom-cagnotte", prompt="Nom de la cagnotte ")
+@click.option("--montant", prompt="Montant ")
+def creationCagnotteCli(nom_participant, nom_cagnotte, montant):
+
+    verif = users_table.select().where(users_table.c.nomCagnotte == nom_cagnotte)
+    with engine.connect() as conn:
+        verification = conn.execute(verif)
+    if len(nom_participant) < 2:
+        click.echo("Le nom du participant doit comprendre plus de deux caractères")
+    if len(nom_cagnotte) < 5:
+        click.echo("Le nom de la cagnotte doit comprendre plus de 5 caractères")
+    if verification:
+        click.echo("Le nom de la cagnotte existe deja")
+    if montant <= "0" or montant is None:
+        click.echo("Le montant doit être positif et non nul")
+
+    stmt = users_table.insert().values(login=nom_participant, montant=montant, nomCagnotte=nom_cagnotte)
+
+    with engine.begin() as conn:
+        result = conn.execute(stmt)
+        click.echo("ajout réussi")

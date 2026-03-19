@@ -11,4 +11,3 @@ users_table = Table(
     Column("nomCagnotte", String, nullable=False),
 )
 
-metadata.create_all(engine)

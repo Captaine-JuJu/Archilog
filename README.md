@@ -32,9 +32,11 @@ Options:
   --help  Show this message and exit.
 
 Commands:
+```
 
 
 Pour utiliser flask et acceder à l'interface graphique sur votre navigateur :
+```bash
 uv run flask --app archilog.views --debug run  
 ```
 
