@@ -102,18 +102,48 @@ def creationCagnotteCli(nom_participant, nom_cagnotte, montant):
 
     verif = users_table.select().where(users_table.c.nomCagnotte == nom_cagnotte)
     with engine.connect() as conn:
-        verification = conn.execute(verif)
+        verification = conn.execute(verif).one_or_none()
+
     if len(nom_participant) < 2:
         click.echo("Le nom du participant doit comprendre plus de deux caractères")
-    if len(nom_cagnotte) < 5:
+    elif len(nom_cagnotte) < 5:
         click.echo("Le nom de la cagnotte doit comprendre plus de 5 caractères")
-    if verification:
+    elif verification is not None:
         click.echo("Le nom de la cagnotte existe deja")
-    if montant <= "0" or montant is None:
+    elif montant <= "0" or montant is None:
         click.echo("Le montant doit être positif et non nul")
+    else :
+        stmt = users_table.insert().values(login=nom_participant, montant=montant, nomCagnotte=nom_cagnotte)
 
-    stmt = users_table.insert().values(login=nom_participant, montant=montant, nomCagnotte=nom_cagnotte)
+        with engine.begin() as conn:
+            result = conn.execute(stmt)
+            click.echo("ajout réussi")
 
-    with engine.begin() as conn:
-        result = conn.execute(stmt)
-        click.echo("ajout réussi")
+@cli.command()
+@click.option("--nom-cagnotte", prompt="Nom de la cagnotte ")
+def voirCagnotteCli(nom_cagnotte):
+    exist = users_table.select().where(users_table.c.nomCagnotte == nom_cagnotte)
+    with engine.connect() as conn:
+        existant = conn.execute(exist).all()
+    if not existant:
+        click.echo("La cagnotte n'existe pas")
+    else:
+        click.echo("La cagnotte " + nom_cagnotte + " contient les transactions suivante :")
+        for i in existant:
+            click.echo(f"{i.login} : {i.montant}")
+
+@cli.command()
+@click.option("--nom-participant", prompt="Nom du participant ")
+@click.option("--nom-cagnotte", prompt="Nom de la cagnotte ")
+@click.option("--nouveau-montant", prompt="Montant ")
+def ajoutParticipationCli(nom_participant, nom_cagnotte, nouveau_montant):
+    exist = users_table.select().where(users_table.c.nomCagnotte == nom_cagnotte)
+    with engine.connect() as conn:
+        existant = conn.execute(exist).all()
+    if not existant:
+        click.echo("La cagnotte n'existe pas")
+    if int(nouveau_montant) <= 0 or nouveau_montant is None:
+        click.echo("Le montant doit etre positif et non nul")
+    if len(nom_participant) < 2:
+        click.echo("Le login doit contenir au moins 3 caractère")
+    enregistrerParticipation(nom_participant, nouveau_montant, nom_cagnotte)
