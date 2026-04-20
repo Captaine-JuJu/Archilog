@@ -7,6 +7,9 @@ dependencies = [
     "click>=8.3.1",
     "flask>=3.1.3",
     "sqlalchemy>=2.0.46",
+    "spectree>=1.3.0",
+    "flask-httpauth>=4.8.0",
+    "pydantic>=2.0.0",
 ]
 requires-python = ">=3.11"
 
