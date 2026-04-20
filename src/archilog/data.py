@@ -1,6 +1,6 @@
 from sqlalchemy import func, update, and_
 
-from archilog.creation_table import  engine, users_table
+from archilog.database import  engine, cagnotte_table
 
 def enregistrerParticipation(nom, montantAjoute, nomCagnotte):
     """
@@ -9,8 +9,8 @@ def enregistrerParticipation(nom, montantAjoute, nomCagnotte):
     :param montant_ajoute:
     :param nomCagnotte:
     """
-    verifMontant = users_table.select().where(
-        and_(users_table.c.login == nom, users_table.c.nomCagnotte == nomCagnotte)
+    verifMontant = cagnotte_table.select().where(
+        and_(cagnotte_table.c.login == nom, cagnotte_table.c.nomCagnotte == nomCagnotte)
     )
 
     with engine.connect() as conn:
@@ -18,11 +18,11 @@ def enregistrerParticipation(nom, montantAjoute, nomCagnotte):
 
         if resultat:
             nouveauMontant = float(resultat.montant) + float(montantAjoute)
-            stmt = update(users_table).where(
-                and_(users_table.c.login == nom, users_table.c.nomCagnotte == nomCagnotte)
+            stmt = update(cagnotte_table).where(
+                and_(cagnotte_table.c.login == nom, cagnotte_table.c.nomCagnotte == nomCagnotte)
             ).values(montant=nouveauMontant)
         else:
-            stmt = users_table.insert().values(
+            stmt = cagnotte_table.insert().values(
                 login=nom, montant=montantAjoute, nomCagnotte=nomCagnotte
             )
 
@@ -36,7 +36,7 @@ def totalCagnotte(nomCagnotte):
     :return: result
     """
 
-    stmt = users_table.select().with_only_columns(func.sum(users_table.c.montant)).where(users_table.c.nomCagnotte == nomCagnotte)
+    stmt = cagnotte_table.select().with_only_columns(func.sum(cagnotte_table.c.montant)).where(cagnotte_table.c.nomCagnotte == nomCagnotte)
 
     with engine.connect() as conn:
         result = conn.execute(stmt).scalar()
@@ -53,10 +53,10 @@ def supprimerParticipation(nom, nomCagnotte):
     """
 
     if nom:
-        stmt = users_table.delete().where(
+        stmt = cagnotte_table.delete().where(
             and_(
-                users_table.c.nomCagnotte == nomCagnotte,
-                users_table.c.login == nom
+                cagnotte_table.c.nomCagnotte == nomCagnotte,
+                cagnotte_table.c.login == nom
             )
         )
         with engine.connect() as conn:

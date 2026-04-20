@@ -2,16 +2,37 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Accueil — Cagnottes</title>
 </head>
 <body>
+    <p>Connecté en tant que <strong>{{ utilisateur }}</strong> — <a href="/auth/deconnexion">Se déconnecter</a></p>
+
     <h1>Bienvenue sur l'application de gestion de cagnotte</h1>
-    <h2>Création de cagnotte</h2>
+
+    <h2>Mes cagnottes</h2>
+    {% if mesCagnottes %}
+        <ul>
+            {% for i in mesCagnottes %}
+                <li><a href="/cagnotte/voir/{{ i.nomCagnotte }}">{{ i.nomCagnotte }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Vous ne participez à aucune cagnotte pour l'instant.</p>
+    {% endif %}
+
+    <h2>Autres cagnottes</h2>
+    {% if autresCagnottes %}
+        <ul>
+            {% for i in autresCagnottes %}
+                <li><a href="/cagnotte/voir/{{ i.nomCagnotte }}">{{ i.nomCagnotte }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune autre cagnotte disponible.</p>
+    {% endif %}
+
+    <h2>Créer une cagnotte</h2>
     <form action="/cagnotte/creationCagnotte" method="post">
-        <div>
-            <label>Votre nom : </label>
-            <input type="text" id="nom" name="nom">
-        </div>
         <div>
             <label>Votre montant : </label>
             <input type="number" id="montant" name="montant">
@@ -20,7 +41,7 @@
             <label>Le nom de votre cagnotte : </label>
             <input type="text" id="nomCagnotte" name="nomCagnotte">
         </div>
-        <div class="button">
+        <div>
             <button type="submit">Valider</button>
         </div>
     </form>
@@ -30,20 +51,9 @@
     {% elif code == "2" %}
     <p>Veuillez entrer un nom de cagnotte valide (5 caractères minimum) !</p>
     {% elif code == "3" %}
-    <p>Le montant doit être possitif et non nul !</p>
+    <p>Le montant doit être positif et non nul !</p>
     {% elif code == "4" %}
-    <p>Cette cagnotte existe deja !</p>
+    <p>Cette cagnotte existe déjà !</p>
     {% endif %}
-
-    <h2>Choix cagnotte</h2>
-    <form action="/cagnotte/choix" method="post">
-        <select name="cagnotte" id="cagnotte" onchange="this.form.submit()">
-            <option value="" selected>Veuillez choisir une cagnotte</option>
-            {% for i in result %}
-                <option value="{{ i.nomCagnotte }}"> {{ i.nomCagnotte }}</option>
-            {% endfor %}
-
-        </select>
-    </form>
 </body>
 </html>

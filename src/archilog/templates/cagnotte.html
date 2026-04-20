@@ -40,21 +40,14 @@
     <h3>Ajout à la cagnotte</h3>
     <form action="/cagnotte/ajoutCagnotte" method="post">
         <div>
-            <label>Votre nom : </label>
-            <input type="text" id="nom" name="nom">
-        </div>
-        <div>
             <label>Votre montant : </label>
             <input type="number" id="montant" name="montant">
         </div>
+        <input type="hidden" name="nomCagnotte" value="{{ nomAffichage }}">
         <div>
-            <input type="hidden" name="nomCagnotte" value="{{ nomAffichage }}">
-        </div>
-        <div class="button">
             <button type="submit">Valider</button>
         </div>
     </form>
-
     {% if error == "1" %}
     <p>Le montant doit être positif et non nul !</p>
     {% elif error == "2" %}
